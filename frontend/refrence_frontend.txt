@@ -1,0 +1,4 @@
+1) configuration : 
+-> npm create vite@latest ./
+-> npm install
+-> npm i react-router-dom axios react-icons react-hot-toast

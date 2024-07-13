@@ -1,0 +1,24 @@
+1)Dependencies ==>
+
+a) bcrypt: A library to help you hash passwords.
+b) cloudinary:(media managment)Effortlessly optimize, transform, upload and manage your cloud's assets.
+c) cookie-parser:Extracts the cookie data from the HTTP request and converts it into a usable format that can be accessed by the server-side code.
+d) cors: Cross-Origin Resource Sharing,  is a fundamental security mechanism implemented by web browsers to prevent unauthorized access to resources on a web page from different origins.
+e) dotenv:allows you to create environment variables in a . env file instead of putting them in your code.
+f) express: Express js is the framework of Node js, which is fully built-in Javascript.
+g) express-fileupload:Simple express middleware for uploading files.
+h) jsonwebtoken:JSON Web Token is a way of securely transmitting information between two parties. It is widely used in web applications for authentication and authorization purposes.
+i) mongoose: Mongoose is an Object Data Modeling (ODM) library that aids with MongoDB database management and interactions in Node. js.
+j) nodemon: It monitors your project directory and automatically restarts your node application.
+k) validator:The Validator npm package is a powerful library designed for data validation in JavaScript applications. {isLenght (min,max), isEmail, isAlphanumeric}
+
+2) Folder Structure :
+
+a) app.js
+b) server.js
+c) config->config.env + databse->dbConnection.js
+d) middleware-> auth.js,catchAsyncError.js,error.js
+e) routes-> userRoutes.js,JobRoutes.js,applicationRoutes.js
+f) models-> userSchema.js,JobSchema.js,applicationSchema.js
+g) controllers->usercontroller.js,Jobcontroller.js,applicationcontroller.js
+h) utils-> jwtToken.js
