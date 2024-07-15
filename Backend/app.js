@@ -16,8 +16,8 @@ dotenv.config({path: "./config/config.env"});
 
 
 const corsOptions = {
-    origin: [process.env.FRONTEND_URL],
-    credentials: true,
+  origin: [process.env.FRONTEND_URL],
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };

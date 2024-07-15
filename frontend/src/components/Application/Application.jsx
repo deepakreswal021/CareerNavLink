@@ -12,7 +12,7 @@ const Application = () => {
   const [address, setAddress] = useState("");
   const [resume, setResume] = useState(null);
 
-  const { isAuthorized, user } = useContext(Context);
+  const { isAuthorized, user,baseurl } = useContext(Context);
 
   const navigateTo = useNavigate();
 
@@ -36,7 +36,7 @@ const Application = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/application/post",
+        `${baseurl}/api/v1/application/post`,
         formData,
         {
           withCredentials: true,

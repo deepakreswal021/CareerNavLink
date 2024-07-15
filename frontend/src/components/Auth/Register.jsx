@@ -16,14 +16,14 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
 
-  const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
+  const { isAuthorized, setIsAuthorized, user, setUser,baseurl } = useContext(Context);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     // console.log("inside error handler");
     try {
       const  data  = await axios.post(
-        "http://localhost:4000/api/v1/user/register",
+        `${baseurl}/api/v1/user/register`,
         { name, phone, email, role, password },
         {
           headers: {

@@ -5,12 +5,12 @@ import { Context } from "../../main";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
-  const { isAuthorized } = useContext(Context);
+  const { isAuthorized,baseurl } = useContext(Context);
   const navigateTo = useNavigate();
   useEffect(() => {
     try {
       axios
-        .get("http://localhost:4000/api/v1/job/getall", {
+        .get(`${baseurl}/api/v1/job/getall`, {
           withCredentials: true,
         })
         .then((res) => {

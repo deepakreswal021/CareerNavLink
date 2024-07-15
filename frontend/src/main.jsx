@@ -1,6 +1,6 @@
+import App from "./App.jsx";
 import React, { createContext, useState } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 
 export const Context = createContext({
   isAuthorized: false,
@@ -9,7 +9,7 @@ export const Context = createContext({
 const AppWrapper = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState({});
-
+  const baseurl = "http://localhost:4000";
   return (
     <Context.Provider
       value={{
@@ -17,6 +17,7 @@ const AppWrapper = () => {
         setIsAuthorized,
         user,
         setUser,
+        baseurl,
       }}
     >
       <App />
