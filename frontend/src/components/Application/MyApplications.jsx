@@ -13,6 +13,7 @@ const MyApplications = () => {
 
   const { isAuthorized , baseurl } = useContext(Context);
   const navigateTo = useNavigate();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     try {
@@ -36,7 +37,7 @@ const MyApplications = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     }
-  }, [isAuthorized]);
+  }, [isAuthorized, refresh]);
 
   if (!isAuthorized) {
     navigateTo("/");
@@ -68,6 +69,37 @@ const MyApplications = () => {
     setModalOpen(false);
   };
 
+  const selectHandler = async(id) => {
+    // console.log("Select clicked", id);
+    await axios.get(`${baseurl}/api/v1/application/employer/statusAccept/${id}`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      toast.success(res.data.message);
+      // navigateTo("/applications/me");
+      setRefresh((prev) => !prev);
+      
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message);
+    });
+  };
+
+  const rejectHandler = async(id) => {
+    // console.log("Select clicked", id);
+    await axios.get(`${baseurl}/api/v1/application/employer/statusReject/${id}`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      toast.success(res.data.message);
+      // navigateTo("/applications/me");
+      setRefresh((prev) => !prev);
+      
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message);
+    });
+  };
   return (
     <section className="my_applications page">
       {user && user.role === "Job Seeker" ? (
@@ -105,6 +137,8 @@ const MyApplications = () => {
                   element={element}
                   key={element._id}
                   openModal={openModal}
+                  selectHandler={selectHandler}
+                  rejectHandler={rejectHandler}
                 />
               );
             })
@@ -158,7 +192,7 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
   );
 };
 
-const EmployerCard = ({ element, openModal }) => {
+const EmployerCard = ({ element, openModal, selectHandler, rejectHandler }) => {
   return (
     <>
       <div className="job_seeker_card">
@@ -185,6 +219,20 @@ const EmployerCard = ({ element, openModal }) => {
             alt="resume"
             onClick={() => openModal(element.resume.url)}
           />
+        </div>
+        <div className="btn-style">
+          {element.applicationStatus === "null" && (
+            <>
+              <button className="accept"  onClick={() => selectHandler(element._id)}>Select</button>
+              <button className="reject"  onClick={() => rejectHandler(element._id)} >Reject</button>
+            </>
+          )}
+          {element.applicationStatus === "accepted" && (
+            <p className="status accepted">Already Selected</p>
+          )}
+          {element.applicationStatus === "rejected" && (
+            <p className="status rejected">Already Rejected</p>
+          )}
         </div>
       </div>
     </>

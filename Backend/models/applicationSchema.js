@@ -59,6 +59,11 @@ const applicationSchema = new mongoose.Schema({
       required: true,
     },
   },
+  applicationStatus: {
+    type: String,
+    enum: ["accepted", "rejected", "null"],
+    default: "null",
+  },
 });
 
 export const Application = mongoose.model("Application", applicationSchema);

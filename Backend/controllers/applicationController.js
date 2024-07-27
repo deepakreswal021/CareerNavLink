@@ -1,4 +1,5 @@
 import ErrorHandler from "../middlewares/error.js";
+import nodemailer from "nodemailer";
 import { v2 as cloudinary } from "cloudinary";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { Application } from "../models/applicationSchema.js";
@@ -158,6 +159,112 @@ export const jobseekerDeleteApplication = catchAsyncErrors(
     res.status(200).json({
       success: true,
       message: "Application Deleted!",
+    });
+  }
+);
+
+
+export const changeApplicationStatusAccepted = catchAsyncErrors(
+  async (req, res, next) => {
+    const { role } = req.user;
+    if (role === "Job Seeker") {
+      return next(
+        new ErrorHandler("Job Seeker not allowed to access this resource.", 400)
+      );
+    }
+
+    const { id } = req.params;
+    let appli = await Application.findById(id);
+    if (!appli) {
+      return next(new ErrorHandler("OOPS! Application not found.", 404));
+    }
+
+    appli.applicationStatus = "accepted";
+    await appli.save();
+
+    const mailID = appli.email;
+
+    try{
+      // console.log("ab accept hona bhai");
+
+      let transporter = nodemailer.createTransport({
+          host: process.env.MAIL_HOST,
+          auth:{
+              user : process.env.MAIL_USER,
+              pass : process.env.MAIL_PASS,
+          }
+      })
+
+
+      let info = await transporter.sendMail({
+          from:`Deepak Reswal`,
+          to:mailID,
+          subject:"Job-update-msg",
+          html:`<h2>Hello ! </h2><p>Accepted </p>`
+      })
+      console.log("info : " , info);
+      console.log("mail send successfully");
+    }
+    catch(e) {
+        console.log(e);
+    }
+
+
+    res.status(200).json({
+      success: true,
+      message: "Application Accepted!",
+    });
+  }
+);
+
+export const changeApplicationStatusRejected = catchAsyncErrors(
+  async (req, res, next) => {
+    const { role } = req.user;
+    if (role === "Job Seeker") {
+      return next(
+        new ErrorHandler("Job Seeker not allowed to access this resource.", 400)
+      );
+    }
+
+    const { id } = req.params;
+    let appli = await Application.findById(id);
+    if (!appli) {
+      return next(new ErrorHandler("OOPS! Application not found.", 404));
+    }
+
+    appli.applicationStatus = "rejected";
+    await appli.save();
+
+    const mailID = appli.email;
+
+    try{
+      // console.log("ab accept hona bhai");
+
+      let transporter = nodemailer.createTransport({
+          host: process.env.MAIL_HOST,
+          auth:{
+              user : process.env.MAIL_USER,
+              pass : process.env.MAIL_PASS,
+          }
+      })
+
+
+      let info = await transporter.sendMail({
+          from:`Deepak Reswal`,
+          to:mailID,
+          subject:"Job-update-msg",
+          html:`<h2>Hello ! </h2><p>Rejected </p>`
+      })
+      console.log("info : " , info);
+      console.log("mail send successfully");
+    }
+    catch(e) {
+        console.log(e);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Application Rejected!",
     });
   }
 );
